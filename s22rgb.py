@@ -3,11 +3,15 @@ import zipfile
 import os
 import cv2
 import numpy as np
+from tqdm import tqdm
+import time
 
-class S22rgb:
+class torgb:
     def __init__(self, InputFilePath, OutputFilePath):
         self.InputFilePath = InputFilePath
         self.OutputFilePath = OutputFilePath
+        if os.path.exists(self.OutputFilePath) == 0:
+            os.mkdir(self.OutputFilePath)
         self.zip = self.find_zip_image_file
         self.run()
     def run(self):
@@ -16,17 +20,26 @@ class S22rgb:
         The batch operation
         '''
         if len(self.zip()) != 0:
+
             for i in range(len(self.zip())):
-                self.un_zip(self.zip()[i])
-                SAFE_PATH = os.path.splitext(self.zip()[i])[0] + '.SAFE'
-                file_dir = os.path.join( self.OutputFilePath, SAFE_PATH)
-                imgfile, xml = self.get_file_name(file_dir)
-                blue = self.read_jp2(imgfile[0])
-                green = self.read_jp2(imgfile[1])
-                red = self.read_jp2(imgfile[2])
-                jpgfile = os.path.splitext(self.zip()[i])[0] + '.jpg'
-                tarpath = os.path.join( self.OutputFilePath, jpgfile)
-                self.rgb_jpg(red, green,blue , tarpath)
+                try:
+                    with tqdm(total=100, iterable='iterable', desc=os.path.splitext(self.zip()[i])[0]) as pbar:
+                        self.un_zip(self.zip()[i])
+                        SAFE_PATH = os.path.splitext(self.zip()[i])[0] + '.SAFE'
+                        file_dir = os.path.join( self.OutputFilePath, SAFE_PATH)
+                        imgfile, xml = self.get_file_name(file_dir)
+                        blue = self.read_jp2(imgfile[0])
+                        green = self.read_jp2(imgfile[1])
+                        red = self.read_jp2(imgfile[2])
+                        jpgfile = os.path.splitext(self.zip()[i])[0] + '.jpg'
+                        tarpath = os.path.join(self.OutputFilePath, jpgfile)
+                        self.rgb_jpg(red, green, blue, tarpath)
+                        time.sleep(1)
+                        pbar.update(100)
+                except KeyboardInterrupt:
+                    pbar.close()
+                    raise
+                pbar.close()
 
     def read_jp2(self,file):
         """
@@ -133,4 +146,4 @@ class S22rgb:
 if __name__ == '__main__':
     img = 'G:\\'
     out = 'G:\sentinel'
-    S22rgb(img, out)
+    torgb(img, out)

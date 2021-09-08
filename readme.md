@@ -16,3 +16,15 @@ The technical route is as follows:
 
 [![h7BBf1.png](https://z3.ax1x.com/2021/09/08/h7BBf1.png)](https://imgtu.com/i/h7BBf1)
 
+
+
+win10 quick install and use:
+
+```
+pip install s22rgb -i https://pypi.python.org/simple
+```
+
+[![h7hTc4.jpg](https://z3.ax1x.com/2021/09/08/h7hTc4.jpg)](https://imgtu.com/i/h7hTc4)
+
+
+
