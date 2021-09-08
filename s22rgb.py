@@ -21,6 +21,8 @@ class torgb:
         '''
         if len(self.zip()) != 0:
 
+
+
             for i in range(len(self.zip())):
                 try:
                     with tqdm(total=100, iterable='iterable', desc=os.path.splitext(self.zip()[i])[0]) as pbar:
@@ -28,9 +30,14 @@ class torgb:
                         SAFE_PATH = os.path.splitext(self.zip()[i])[0] + '.SAFE'
                         file_dir = os.path.join( self.OutputFilePath, SAFE_PATH)
                         imgfile, xml = self.get_file_name(file_dir)
-                        blue = self.read_jp2(imgfile[0])
-                        green = self.read_jp2(imgfile[1])
-                        red = self.read_jp2(imgfile[2])
+                        # 判断1LC or 2LC
+                        if os.path.basename(file_dir).split('_')[1] =="MSIL1C":
+                            band =  [1,2,3]
+                        elif os.path.basename(file_dir).split('_')[1] =="MSIL2A":
+                            band = [0, 1, 2]
+                        blue = self.read_jp2(imgfile[band[0]])
+                        green = self.read_jp2(imgfile[band[1]])
+                        red = self.read_jp2(imgfile[band[2]])
                         jpgfile = os.path.splitext(self.zip()[i])[0] + '.jpg'
                         tarpath = os.path.join(self.OutputFilePath, jpgfile)
                         self.rgb_jpg(red, green, blue, tarpath)
@@ -122,6 +129,7 @@ class torgb:
         maxout = 255
         minout = 0
 
+
         data_8bit_new = minout + ((band_data - d2) / (u98 - d2)) * (maxout - minout)
         data_8bit_new[data_8bit_new < minout] = minout
         data_8bit_new[data_8bit_new > maxout] = maxout
@@ -144,6 +152,8 @@ class torgb:
 
 
 if __name__ == '__main__':
-    img = 'G:\\'
-    out = 'G:\sentinel'
+
+    img = 'D:\\'
+    img = r'C:\Users\ytkz1\Downloads'
+    out = 'D:\\sentinel'
     torgb(img, out)

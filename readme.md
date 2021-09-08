@@ -26,5 +26,6 @@ pip install s22rgb -i https://pypi.python.org/simple
 
 [![h7hTc4.jpg](https://z3.ax1x.com/2021/09/08/h7hTc4.jpg)](https://imgtu.com/i/h7hTc4)
 
+usage:
 
-
+[![hHecHe.jpg](https://z3.ax1x.com/2021/09/08/hHecHe.jpg)](https://imgtu.com/i/hHecHe)
